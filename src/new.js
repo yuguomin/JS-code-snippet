@@ -1,4 +1,3 @@
-// import { noNullObjectType } from './lib/noNullObjectType';
 const noNullObjectType = require('./lib/noNullObjectType');
 
 /** 
@@ -15,7 +14,7 @@ function myNew(fn) {
   if (fn.prototype !== null) {
     result.__proto__ = fn.prototype;
   }
-  const ret = fn.apply(result, Array.prototype.slice.call(arguments, 1));
+  const ret = fn.apply(result, [...arguments].slice(1));
   if (noNullObjectType(ret)) {
     return ret;
   }
