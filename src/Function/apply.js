@@ -14,7 +14,7 @@ Function.prototype.myApply = function (context) {
   context = [undefined, null].includes(context) ? window : context;
   const symFn = Symbol();
   context[symFn] = this;
-  const result = context[symFn](arguments[1]);
+  const result = context[symFn](...arguments[1]);
   delete context[symFn];
   return result;
 }

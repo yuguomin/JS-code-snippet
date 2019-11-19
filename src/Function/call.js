@@ -3,7 +3,7 @@
  * Function.prototype.call方法实现
  * 1. 函数才可调用，修改函数的 this 指向为第一个参数
  * 2. 第一个参数为 undefined, null则指向 window
- * 3. 后续参数传给调用参数
+ * 3. 后续参数传给调用函数
  * 4. 执行返回结果
  */
 
