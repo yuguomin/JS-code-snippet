@@ -1,5 +1,3 @@
-import { noNullObjectType } from '../lib/noNullObjectType';
-
 /** 
  * @description
  * 实现一个Object.create方法
@@ -14,8 +12,8 @@ import { noNullObjectType } from '../lib/noNullObjectType';
     fn.prototype = proto;
     const result = new fn();
     if (propertiesObject) {
-      for (let i in propertiesObject) {
-        result[i] = propertiesObject[i];
+      for (let key in propertiesObject) {
+        result[key] = propertiesObject[key];
       }
     }
     return result;
