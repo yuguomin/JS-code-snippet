@@ -31,15 +31,17 @@ class MyPromise {
   _resolve(val) {
     if (this._status !== PENDING) { return; }
     const run = () => {
-      // 清空 fulfilled 队列
+      // 遍历执行 fulfilled 队列
       const runFulfilled = () => {
+        this._rejectedQueues = [];
         let cb;
         while (cb = this._fulfilledQueues.shift()) {
           cb(val);
         }
       }
-      // 清空 rejected 队列
+      // 遍历执行 rejected 队列
       const runRejected = () => {
+        this._fulfilledQueues = [];
         let cb;
         while (cb = this._rejectedQueues.shift()) {
           cb(val);
@@ -48,22 +50,22 @@ class MyPromise {
       // 判断参数是否为 Promise
       if (val instanceof MyPromise) {
         val.then((value) => {
-          this._value = value
-          this._status = FULFILLED
+          this._value = value;
+          this._status = FULFILLED;
           runFulfilled();
         }, (error) => {
-          this._value = error
-          this._status = REJECTED
+          this._value = error;
+          this._status = REJECTED;
           runRejected();
         })
       } else {
-        this._value = value
-        this._status = FULFILLED
+        this._value = val;
+        this._status = FULFILLED;
         runFulfilled();
       }
     }
     // 使用异步保证 fulfilled 和 rejected 的异步
-    setTimeout(() => run(), 0)
+    setTimeout(() => run(), 0);
   }
   // _reject函数，用于更改状态到 REJECTED，并且清空 rejectedQueues 队列
   _reject(err) {
@@ -72,11 +74,11 @@ class MyPromise {
       this._status = REJECTED;
       this._value = err;
       let cb;
-      while(cb = this._rejectedQueues.shift()) {
+      while (cb = this._rejectedQueues.shift()) {
         cb(err);
       }
-      setTimeout(() => run(), 0);
     }
+    setTimeout(() => run(), 0);
   }
 
   /** 
@@ -92,12 +94,13 @@ class MyPromise {
    */
   then(onFulfilled, onRejected) {
     const { _status: status, _value: value } = this;
+    // console.log('then status', status);
     return new MyPromise((onFulfilledNext, onRejectedNext) => {
       // 对 then 中传递 onFulfilled 函数加以封装，
       const fulfiled = (val) => {
         try {
           // 判断是否为函数，不是则忽略，直接把返回的 Promise 状态设置为 fulfilled
-          if (!isFunction(onFulfilled)) { 
+          if (!isFunction(onFulfilled)) {
             onFulfilledNext(val);
             return;
           }
@@ -115,7 +118,7 @@ class MyPromise {
       // 对 then 中传递 onRejected 函数加以封装，
       const rejected = (err) => {
         try {
-           // 判断是否为函数，不为函数忽略，并且直接设置返回的 Promise 状态为 rejected
+          // 判断是否为函数，不为函数忽略，并且直接设置返回的 Promise 状态为 rejected
           if (!isFunction(onRejected)) {
             onRejectedNext(err);
             return;
@@ -154,40 +157,63 @@ class MyPromise {
   catch(onRejected) {
     this.then(undefined, onRejected);
   }
+  /** 
+   * 静态resolve方法
+   * 如果是 MyPromise 实例直接返回该实例
+   * 如果不是则看是不是有一个 then 方法的对象
+   * 其它则转换为 Promise 实例
+   */
+  static resolve(value) {
+    if (value instanceof MyPromise) { return value; }
+    if (Object.prototype.toString.call(value) === '[object Object]' && typeof (value.then) === 'function') {
+      return new MyPromise(value.then);
+    }
+    return new MyPromise((resolve) => { resolve(value); });
+  }
+  /** 
+   * 静态reject方法
+   * 无论传什么都作为新 Promise 参数传递error
+   */
+  static reject(error) {
+    return new MyPromise((_, reject) => { reject(error); })
+  }
+  /** 
+   * 静态all方法
+   * 1. 确认列表的每个元素是否为MyPromise实例，不为的调用MyPromise.resolve
+   * 2. 列表封装为一个MyPromise实例，即返回一个 MyPromise
+   * 3. 如果全为执行正常，则返回成功列表，如果有一个失败则返回失败的第一个
+   * 4. 返回的实例状态与上面的相同
+   */
+  static all(list) {
+    return new MyPromise((resolve, reject) => {
+      let result = [];
+      let count = 0;
+      for (let [i, p] of list.entries()) {
+        this.resolve(p).then((val) => {
+          result[i] = val;
+          count++;
+          if (count === list.length) { resolve(result); }
+        }, (err) => {
+          reject(err);
+        })
+      }
+    })
+  }
+  /** 
+   * 静态race方法
+   * 1. 确认列表的每个元素是否为MyPromise实例，不为的调用MyPromise.resolve
+   * 2. 列表封装为一个MyPromise实例，即返回一个 MyPromise
+   * 3. 只要有一个实例fulfilled或者rejected就会触发包装实例的对应状态，并把返回值传递过去。
+   */
+  static race(list) {
+    return new MyPromise((resolve, reject) => {
+      for (let p of list) {
+        this.resolve(p).then((val) => {
+          resolve(val);
+        }, (err) => {
+          reject(err);
+        })
+      }
+    })
+  }
 }
-
-
-// const a = new MyPromise((res) => {
-//   console.log(0);
-//   // setTimeout(() => {
-//   res(1);
-//   // }, 1000);
-// }).then((val) => {
-//   console.log(val);
-//   return new MyPromise((res) => {
-//     setTimeout(() => {
-//       res(2);
-//     }, 1000);
-//   })
-// }).then((val) => {
-//   console.log(val);
-//   return '3';
-// });
-
-// a.then((val) => {
-//   console.log(val);
-// })
-
-console.log('x');
-
-const a = new MyPromise((res) => {
-  // res();
-})
-// const a = new MyPromise((res) => {
-//   console.log(0);
-//   // setTimeout(() => {
-//   res(1);
-//   // }, 1000);
-// }).then('_').then((val) => {
-//   console.log(val);
-// })
