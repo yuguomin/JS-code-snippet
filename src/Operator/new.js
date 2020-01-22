@@ -1,4 +1,4 @@
-const noNullObjectType = require('./lib/noNullObjectType');
+const noNullObjectType = require('../lib/noNullObjectType');
 
 /** 
  * @description
