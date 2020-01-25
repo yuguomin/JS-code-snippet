@@ -8,27 +8,29 @@
  * @example [[1, 1, 0], [1, 1, 1], [0, 1, 1]] -> 1
  * @param {number[][]} M
  * @return {number}
+ * 
+ * 解决思路
+ * 使用的是广度优先搜索的方法，整个朋友圈的条数可以算作一个个连接图，每一条直接没有重复节点，那么我们可以对访问过的进行记录，不需要二次搜索。
+ * 通过随机访问一个节点，找到他所有的朋友节点，在去遍历每一层的朋友节点，进行记录。
  */
 
 const findCircleNum = function (M) {
   let n = M.length;
-  if (n == 0) {
-    return 0;
-  }
+  if (n === 0) { return 0; }
   let count = 0;
-  let bfs = (i) => {
+  const bfs = (i) => {
     let queue = [i];
     while (queue.length > 0) {
       let adjacentPoint = queue.pop();
       for (let j = 0; j < n; j++) {
-        if (M[adjacentPoint][j] == 1 && !visited[j]) {
+        if (M[adjacentPoint][j] === 1 && !visited[j]) {
           visited[j] = true;
           queue.push(j);
         }
       }
     }
   }
-  let visited = {};
+  const visited = {};
   for (let i = 0; i < n; i++) {
     if (!visited[i]) {
       bfs(i);
