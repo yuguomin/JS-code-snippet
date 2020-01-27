@@ -34,4 +34,4 @@ const trap = function (height) {
   return result;
 }
 
-console.log('[0,1,0,2,1,0,1,3,2,1,2,1] -> ', trap([4,2,3]));
+console.log('[0,1,0,2,1,0,1,3,2,1,2,1] -> ', trap([0,1,0,2,1,0,1,3,2,1,2,1]));

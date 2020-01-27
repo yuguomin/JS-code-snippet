@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>等分布局inline-block或者float</title>
+  <style>
+    .outer {
+      height: 300px;
+      font-size: 0; /* 使用inline-block可以使用该方法去除空白区域 */
+      border: 2px solid #000;
+    }
+    .outer div {
+      height: 100%;;
+      outline: 1px solid pink;
+    }
+    .inner {
+      display: inline-block;
+      width: 33.33%;
+    }
+    /* 或者采用 */
+    /* .inner {
+      float: left;
+      width: 33.33%;
+    } */
+  </style>
+</head>
+<body>
+  <div class="outer">
+    <div class="inner"></div>
+    <div class="inner"></div>
+    <div class="inner"></div>
+  </div>
+</body>
+</html>

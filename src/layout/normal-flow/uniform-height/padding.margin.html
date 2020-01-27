@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>等高布局padding补偿法</title>
+  <style>
+    .outer {
+      outline: 1px solid #000;
+      width: 300px;
+      overflow: hidden; /* 去除该属性查看元素被补偿的长度 */
+    }
+
+    .outer::after {
+      content: '';
+      display: block;
+      height: 0;
+      clear: both;
+    }
+
+    .inner {
+      float: left;
+      width: 33.33%;
+      padding-bottom: 9999px;
+      margin-bottom: -9999px;
+    }
+
+    .pink {
+      background-color: pink;
+    }
+
+    .sky {
+      background-color: skyblue;
+    }
+
+    .gray {
+      background-color: gray;
+    }
+
+    /* .black {
+      background-color: #000;
+    } */
+  </style>
+</head>
+
+<body>
+  <div class="outer">
+    <!-- 当下列内容在一行且不等高 -->
+    <div class="inner pink">我是第一个框的内容我是第一个框的内容我是第一个框的内容我是第一个框的内容我是第一个框的内容我是第一个框的内容</div>
+    <div class="inner sky">我是第二个框的内容</div>
+    <div class="inner gray">我是第三个框的内容我是第三个框的内容我是第三个框的内容我是第三个框的内容我是第三个框的内容我是第三个框的内容
+      我是第三个框的内容我是第三个框的内容我是第三个框的内容我是第三个框的内容我是第三个框的内容我是第三个框的内容我是第三个框的内容
+      我是第三个框的内容我是第三个框的内容我是第三个框的内容我是第三个框的内容我是第三个框的内容我是第三个框的内容我是第三个框的内容
+      我是第三个框的内容</div>
+  </div>
+  <!-- <div class="black">我来组成底部</div> -->
+</body>
+
+</html>
