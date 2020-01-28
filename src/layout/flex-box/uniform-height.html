@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>等高布局</title>
+  <style>
+    .sky {
+      background-color: skyblue;
+    }
+
+    .pink {
+      background-color: pink;
+    }
+
+    .gray {
+      background-color: gray;
+    }
+
+    .outer {
+      display: flex;
+    }
+    .inner {
+      flex: 1;
+      align-items: stretch; /* 实际是默认属性 */
+    }
+  </style>
+</head>
+
+<body>
+  <div class="outer">
+    <!-- 当下列内容在一行且不等高 -->
+    <div class="inner pink">我是第一个框的内容我是第一个框的内容我是第一个框的内容我是第一个框的内容我是第一个框的内容我是第一个框的内容</div>
+    <div class="inner sky">我是第二个框的内容</div>
+    <div class="inner gray">我是第三个框的内容我是第三个框的内容我是第三个框的内容我是第三个框的内容我是第三个框的内容我是第三个框的内容
+      我是第三个框的内容我是第三个框的内容我是第三个框的内容我是第三个框的内容我是第三个框的内容我是第三个框的内容我是第三个框的内容
+      我是第三个框的内容我是第三个框的内容我是第三个框的内容我是第三个框的内容我是第三个框的内容我是第三个框的内容我是第三个框的内容
+      我是第三个框的内容</div>
+  </div>
+</body>
+
+</html>
