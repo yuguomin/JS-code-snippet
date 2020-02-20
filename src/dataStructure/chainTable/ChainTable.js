@@ -12,7 +12,7 @@
  * 9. isEmpty方法，判断链表是否为空
  * 10. size方法，获取链表长度
  */
-const ChainNode = require('./ChainNode')
+const ChainNode = require('./ChainNode');
 
 const headSymbol = Symbol('head');
 const lenSymbol = Symbol('length');
