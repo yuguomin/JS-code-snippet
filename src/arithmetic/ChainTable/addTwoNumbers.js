@@ -17,6 +17,9 @@ const ChainTable = require('../../dataStructure/chainTable/ChainTable');
  * @return {ListNode}
  * 
  * 解题思路
+ * 1. 首先循环遍历，由于是倒序，因此直接两边同时遍历相加即可
+ * 2. 可能出现场景考虑，相加大于等于10，进位保存；两边长度不相同会单加；两边都没有，进位仍有，还需要进行计算
+ * 3. 结果顺序问题考虑，需要将每次的结果作为上一个结果的next存在，利用变量不断指向上一次的结果，设置next为新结果
  */
 
 function ListNode(value) {
@@ -28,47 +31,24 @@ const addTwoNumbers = (l1, l2) => {
   let l1Cur = l1;
   let l2Cur = l2;
   let extra = 0;
-  let l1Val = 0;
-  let l2Val = 0;
-  let res;
-  let preRes = null;
-  while (true) {
-    l1Val = 0;
-    l2Val = 0;
-    if (!(l1Cur || l2Cur || extra)) break;
-    if (l1Cur) {
-      l1Val = l1Cur.value;
-      l1Cur = l1Cur.next;
+  let res = new ListNode();
+  let pointer = res;
+  while (l1Cur || l2Cur || extra) {
+    const l1Val = l1Cur ? l1Cur.value : 0;
+    const l2Val = l2Cur ? l2Cur.value : 0;
+    const sum = l1Val + l2Val + extra;
+    if (sum > 9) {
+      pointer.next = new ListNode(sum % 10);
+      extra = 1;
+    } else {
+      pointer.next = new ListNode(sum);
+      extra = 0;
     }
-    if (l2Cur) {
-      l2Val = l2Cur.value;
-      l2Cur = l2Cur.next;
-    }
-    let curVal = l1Val + l2Val + extra;
-    extra > 0 ? extra-- : extra;
-    if (curVal > 9) {
-      curVal -= 10;
-      extra++;
-    }
-    res = new ListNode(curVal);
-    res.next = preRes;
-    preRes = res;
+    if (l1Cur) l1Cur = l1Cur.next;
+    if (l2Cur) l2Cur = l2Cur.next;
+    pointer = pointer.next;
   }
-  return reverseList(res);
-}
-
-const reverseList = function(head) {
-  if (head === null || head.next === null) return head;
-  let newHead = null;
-  let preHead = null;
-  let cur = head;
-  while(cur) {
-    newHead = new ListNode(cur.value);
-    newHead.next = preHead;
-    preHead = newHead;
-    cur = cur.next;
-  }
-  return newHead;
+  return res.next;
 }
 
 const testL1 = new ChainTable();
@@ -80,4 +60,4 @@ testL2.append(5);
 testL2.append(6);
 testL2.append(4);
 
-console.log(addTwoNumbers(testL1.getHead(), testL2.getHead()));
+console.log('(2 -> 4 -> 3) + (5 -> 6 -> 4)  -> ', addTwoNumbers(testL1.getHead(), testL2.getHead()));
