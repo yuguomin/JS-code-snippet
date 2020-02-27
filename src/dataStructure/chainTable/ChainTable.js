@@ -23,8 +23,8 @@ class ChainTable {
     this[lenSymbol] = 0;
   }
 
-  append(value) {
-    const node = new ChainNode(value);
+  append(value, next = null) {
+    const node = new ChainNode(value, next);
     let curNode = this[headSymbol];
     if (curNode === null) {
       this[headSymbol] = node;
