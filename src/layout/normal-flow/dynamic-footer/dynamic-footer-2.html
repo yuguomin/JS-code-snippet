@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>content超出视口，footer不展示，否则在底部</title>
+  <style>
+    body,
+    html {
+      padding: 0;
+      margin: 0;
+      height: 100%;
+    }
+
+    .header {
+      height: 60px;
+      background: pink;
+    }
+
+    .content {
+      box-sizing: border-box;
+      padding-bottom: 60px;
+      min-height: 100%;
+    }
+
+    .main {
+      background-color: skyblue;
+      height: 500px;
+    }
+
+    .footer {
+      margin-top: -60px;
+      height: 60px;
+      background-color: darkkhaki;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="content">
+    <div class="header"></div>
+    <div class="main">content</div>
+  </div>
+  <div class="footer"></div>
+</body>
+
+</html>
