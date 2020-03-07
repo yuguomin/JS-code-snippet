@@ -14,7 +14,7 @@
 var longestCommonPrefix = function (strs) {
   let res = strs[0] || '';
   if (!res) return res;
-  const maxLen = res.length;
+  let maxLen = res.length;
   const strsLen = strs.length;
   const startS = res[0];
   for (let i = 1; i < strsLen; i++) {
@@ -23,6 +23,7 @@ var longestCommonPrefix = function (strs) {
     for (let j = 0; j < maxLen; j++) {
       if (res[j] !== str[j]) {
         res = res.slice(0, j);
+        maxLen = res.length;
         break
       }
     }
@@ -30,7 +31,8 @@ var longestCommonPrefix = function (strs) {
   return res;
 }
 
-console.log(["", "flow", "flight"], longestCommonPrefix(["", "flow", "flight"]));
-console.log(["dog", "racecar", "car"], longestCommonPrefix(["dog", "racecar", "car"]));
-console.log(["aa", "a"], longestCommonPrefix(["aa", "a"]));
-console.log(["c", "c"], longestCommonPrefix(["c", "c"]));
+console.log(`['flower','flow','flight'] ->`, longestCommonPrefix(['flower','flow','flight']));
+console.log(`['', 'flow', 'flight'] ->`, longestCommonPrefix(['', 'flow', 'flight']));
+console.log(`['dog', 'racecar', 'car'] ->`, longestCommonPrefix(['dog', 'racecar', 'car']));
+console.log(`['aa', 'a'] ->`, longestCommonPrefix(['aa', 'a']));
+console.log(`['c', 'c'] ->`, longestCommonPrefix(['c', 'c']));
