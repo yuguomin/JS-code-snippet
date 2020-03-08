@@ -50,7 +50,7 @@ const maxAreaOfIsland = function(grid) {
       if (map[row + '_' + column]) continue; // 保证只查看一次
       dfs(row, column);
       maxCount = Math.max(maxCount, curCount); // 更新
-      curCount = 0; // 重制
+      curCount = 0; // 重置
     }
   }
   return maxCount;

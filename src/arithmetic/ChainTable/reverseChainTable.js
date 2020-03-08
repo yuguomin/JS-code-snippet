@@ -23,7 +23,7 @@ function ListNode(value) {
   this.next = null;
 }
 
-const reverseList = function(head) {
+const reverseList = (head) => {
   if (head === null || head.next === null) return head;
   let newHead = null;
   let preHead = null;

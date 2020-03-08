@@ -7,7 +7,7 @@
  * 3. 斐波那契前面两个数影响后面一个数，两个子结构，因此需要不断的迁移状态，保存两个子结构
  */
 
-function dynFib(n) {
+const dynFib = (n) => {
   let last = 1;
   let preLast = 1;
   let res = 1;
